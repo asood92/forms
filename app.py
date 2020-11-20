@@ -19,21 +19,21 @@ def homepage():
 @app.route("/froyo")
 def choose_froyo():
     """Shows a form to collect the user's Fro-Yo order."""
-    return """
-    <form action="/froyo_results" method="GET">
-        What is your favorite Fro-Yo flavor? <br/>
-        <input type="text" name="flavor"><br/>
-        <input type="text" name="toppings"><br/>
-        <input type="submit" value="Submit!">
-    </form>
-    """
+    context = {
+        "users_froyo_flavor": request.args.get("flavor"),
+        "users_toppings": request.args.get("toppings"),
+    }
+    return render_template("froyo_form.html", **context)
 
 
 @app.route("/froyo_results")
 def show_froyo_results():
-    users_froyo_flavor = request.args.get("flavor")
-    user_toppings = request.args.get("toppings")
-    return f"You ordered {users_froyo_flavor} flavored Fro-Yo with {user_toppings}!"
+    """Outputs the results of choose_froyo, a users froyo order"""
+    context = {
+        "users_froyo_flavor": request.args.get("flavor"),
+        "users_toppings": request.args.get("toppings"),
+    }
+    return render_template("froyo_results.html", **context)
 
 
 @app.route("/favorites")
@@ -69,7 +69,7 @@ def secret_message():
     <form action="/message_results" method="POST">
         Enter a secret message <br/>
         <input type="text" name="message">
-        <input type="submit" name="Submit">
+        <input type="submit" value="Submit">
     </form>
     """
 
@@ -77,49 +77,35 @@ def secret_message():
 @app.route("/message_results", methods=["POST"])
 def message_results():
     """Shows the user their message, with the letters in sorted order."""
-    user_message = request.args.get("message")
-    user_message = user_message.sort_letters()
+    user_message = request.form.get("message")
+    user_message = sort_letters(user_message)
     return f"Here's your secret message! \n {user_message}"
 
 
 @app.route("/calculator")
 def calculator():
     """Shows the user a form to enter 2 numbers and an operation."""
-    return """
-    <form action="/calculator_results" method="GET">
-        Please enter 2 numbers and select an operator.<br/><br/>
-        <input type="number" name="operand1">
-        <select name="operation">
-            <option value="add">+</option>
-            <option value="subtract">-</option>
-            <option value="multiply">*</option>
-            <option value="divide">/</option>
-        </select>
-        <input type="number" name="operand2">
-        <input type="submit" value="Submit!">
-    </form>
-    """
+    context = {
+        "numberOne": request.args.get("operand1"),
+        "numberTwo": request.args.get("operand2"),
+        "mathOperation": request.args.get("operation"),
+    }
+    return render_template("calculator_form.html", **context)
 
 
 @app.route("/calculator_results")
 def calculator_results():
     """Shows the user the result of their calculation."""
-    numberOne = request.args.get("operand1")
-    numberTwo = request.args.get("operand2")
-    mathOperation = request.args.get("operation")
-    if mathOperation == "add":
-        return f"You chose to {mathOperation} {numberOne} {numberTwo}. Your result is {int(numberOne) + int(numberTwo)}"
-    elif mathOperation == "subtract":
-        return f"You chose to {mathOperation} {numberOne} {numberTwo}. Your result is {int(numberOne) - int(numberTwo)}"
-
-    elif mathOperation == "multiply":
-        return f"You chose to {mathOperation} {numberOne} {numberTwo}. Your result is {int(numberOne) * int(numberTwo)}"
-    else:
-        return f"You chose to {mathOperation} {numberOne} {numberTwo}. Your result is {int(numberOne) / int(numberTwo)}"
+    print(request.args)
+    context = {
+        "numberOne": request.args.get("operand1"),
+        "numberTwo": request.args.get("operand2"),
+        "mathOperation": request.args.get("operation"),
+    }
+    return render_template("calculator_results.html", **context)
 
 
-# List of compliments to be used in the `compliments_results` route (feel free
-# to add your own!)
+# List of compliments to be used in the `compliments_results` route
 # https://systemagicmotives.com/positive-adjectives.htm
 list_of_compliments = [
     "awesome",
@@ -157,9 +143,7 @@ def compliments():
 @app.route("/compliments_results")
 def compliments_results():
     """Show the user some compliments."""
-    context = {
-        # TODO: Enter your context variables here.
-    }
+    context = {}
 
     return render_template("compliments_results.html", **context)
 
