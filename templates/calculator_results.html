@@ -5,15 +5,15 @@
     </head>
     <body>
         {% if mathOperation ==  "add" %}
-            You chose to {{ mathOperation }} {{ numberOne }} and {{ numberTwo }}. Your result is {{ numberOne|int + numberTwo|int }}
+            You chose to {{ mathOperation }} {{ numberOne }} and {{ numberTwo }}. Your result is: {{ numberOne|int + numberTwo|int }}
 
         {% elif mathOperation == "subtract" %}
-            You chose to {{ mathOperation }} {{ numberOne }} and {{ numberTwo }}. Your result is {{ numberOne|int - numberTwo|int }}
+            You chose to {{ mathOperation }} {{ numberOne }} and {{ numberTwo }}. Your result is: {{ numberOne|int - numberTwo|int }}
 
         {% elif mathOperation == "multiply" %}
-            You chose to {{ mathOperation }} {{ numberOne }} and {{ numberTwo }}. Your result is {{ numberOne|int * numberTwo|int }}
+            You chose to {{ mathOperation }} {{ numberOne }} and {{ numberTwo }}. Your result is: {{ numberOne|int * numberTwo|int }}
         {% else %}
-            You chose to {{ mathOperation }} {{ numberOne }} and {{ numberTwo }}. Your result is {{ numberOne|int / numberTwo|int }}
+            You chose to {{ mathOperation }} {{ numberOne }} and {{ numberTwo }}. Your result is: {{ numberOne|int / numberTwo|int }}
         {% endif %}
 
     </body>
